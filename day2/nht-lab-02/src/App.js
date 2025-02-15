@@ -1,7 +1,6 @@
 
 import './App.css';
 import NhtCompInfor from './components/NhtCompInfor';
-
 function App() {
   return (
     <div className="App">
