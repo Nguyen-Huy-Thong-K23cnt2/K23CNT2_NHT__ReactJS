@@ -1,0 +1,8 @@
+{
+  "name": "nht_hello",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "web-vitals": "^4.2.4"
+  }
+}
