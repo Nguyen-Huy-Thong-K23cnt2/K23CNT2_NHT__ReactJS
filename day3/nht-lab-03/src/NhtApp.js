@@ -1,3 +1,4 @@
+import NhtClassComp from "./components/NhtClassComp";
 import NhtFunComp from "./components/NhtFunComp";
 import NhtJsxExpression from "./components/NhtJsxExpression";
 
@@ -13,7 +14,7 @@ function NhtApp() {
        <NhtFunComp/>
 
       {/* sử dụng class component*/}
-      <NhtFunComp></NhtFunComp>
+      <NhtClassComp></NhtClassComp>
     </div>
   );
 }
