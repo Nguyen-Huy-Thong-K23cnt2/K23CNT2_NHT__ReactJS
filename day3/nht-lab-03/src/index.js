@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import NhtApp from './NhtApp';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const nhtRoot = ReactDOM.createRoot(document.getElementById('nhtRoot'));
+nhtRoot.render(
   <React.StrictMode>
-    <App />
+    <NhtApp />
   </React.StrictMode>
 );
 
