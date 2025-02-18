@@ -26,7 +26,7 @@ class NhtClassComp extends Component {
     return (
       <div className='alert alert-success'>
         <h2>Trình bày dữ liệu từ state</h2>
-        <p>Full Name: {this.state.fullName}</p>
+        <p> Name: {this.state.fullName}</p>
         <p>Age: {this.state.age}</p>
         <p>Phone: {this.state.phone}</p>
         <hr />

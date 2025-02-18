@@ -23,7 +23,7 @@ function NhtApp() {
         </div>
         <NhtClassComp/>
        {/* chuyển dữ liệu từ NhtApp -> NhtClassComp */}
-       <NhtClassComp renderName="K23CNT2" renderUsers={users}/>
+       <NhtClassComp renderName="Thông" renderUsers={users}/>
     </div>
   );
 }
