@@ -1,0 +1,21 @@
+/* NhtApp.css */
+.header {
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.content {
+  background-color: lightgray;
+  color: black;
+  padding: 10px;
+  text-align: center;
+}
+
+.footer {
+  background-color: darkgray;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
