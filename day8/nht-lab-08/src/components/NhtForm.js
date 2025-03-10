@@ -7,17 +7,30 @@ export default class NhtForm extends Component {
       nhtID: '',
       nhtStudentName: '',
       nhtAge: '',
-      nhtGender: '',
+      nhtGender: 'Nam',
       nhtBirthday: '',
-      nhtBrithPlace: '',
+      nhtBirthPlace: 'HN',
       nhtAddress: ''
     };
   }
 
-  // Cập nhật state khi props thay đổi
+  // Cập nhật form khi nhận dữ liệu từ props
   componentDidUpdate(prevProps) {
-    if (prevProps.renderNhtStudent !== this.props.renderNhtStudent && this.props.renderNhtStudent) {
-      this.setState({ ...this.props.renderNhtStudent });
+    if (prevProps.renderNhtStudent !== this.props.renderNhtStudent) {
+      if (this.props.renderNhtStudent) {
+        this.setState({ ...this.props.renderNhtStudent });
+      } else {
+        // Nếu đang ở chế độ "Thêm mới", reset form
+        this.setState({
+          nhtID: '',
+          nhtStudentName: '',
+          nhtAge: '',
+          nhtGender: 'Nam',
+          nhtBirthday: '',
+          nhtBirthPlace: 'HN',
+          nhtAddress: ''
+        });
+      }
     }
   }
 
@@ -27,34 +40,40 @@ export default class NhtForm extends Component {
     this.setState({ [name]: value });
   };
 
-  // Gửi dữ liệu cập nhật khi nhấn "Lưu"
+  // Gửi dữ liệu khi nhấn "Lưu"
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.onNhtHandleUpdate(this.state);
+    if (this.props.isAddingNew) {
+      this.props.onNhtHandleSaveNew({ ...this.state, nhtID: `SV${Date.now()}` }); // Tạo mã SV tự động
+    } else {
+      this.props.onNhtHandleUpdate(this.state);
+    }
   };
 
   render() {
     return (
       <div className="card">
         <div className="card-body">
-          <h3 className="card-title">Thông tin sinh viên</h3>
+          <h3 className="card-title">{this.props.isAddingNew ? "Thêm sinh viên mới" : "Chỉnh sửa thông tin"}</h3>
           <form onSubmit={this.handleSubmit}>
-            <div className="form-group row">
-              <label className="col-sm-3 col-form-label">Mã sinh viên</label>
-              <div className="col-sm-9">
-                <input type="text" className="form-control" name="nhtID" value={this.state.nhtID} readOnly />
+            {!this.props.isAddingNew && (
+              <div className="form-group row">
+                <label className="col-sm-3 col-form-label">Mã sinh viên</label>
+                <div className="col-sm-9">
+                  <input type="text" className="form-control" name="nhtID" value={this.state.nhtID} readOnly />
+                </div>
               </div>
-            </div>
+            )}
             <div className="form-group row">
               <label className="col-sm-3 col-form-label">Tên sinh viên</label>
               <div className="col-sm-9">
-                <input type="text" className="form-control" name="nhtStudentName" value={this.state.nhtStudentName} onChange={this.handleChange} />
+                <input type="text" className="form-control" name="nhtStudentName" value={this.state.nhtStudentName} onChange={this.handleChange} required />
               </div>
             </div>
             <div className="form-group row">
               <label className="col-sm-3 col-form-label">Tuổi</label>
               <div className="col-sm-9">
-                <input type="text" className="form-control" name="nhtAge" value={this.state.nhtAge} onChange={this.handleChange} />
+                <input type="number" className="form-control" name="nhtAge" value={this.state.nhtAge} onChange={this.handleChange} required />
               </div>
             </div>
             <div className="form-group row">
@@ -69,13 +88,13 @@ export default class NhtForm extends Component {
             <div className="form-group row">
               <label className="col-sm-3 col-form-label">Ngày sinh</label>
               <div className="col-sm-9">
-                <input className="form-control" name="nhtBirthday" value={this.state.nhtBirthday} onChange={this.handleChange} />
+                <input type="date" className="form-control" name="nhtBirthday" value={this.state.nhtBirthday} onChange={this.handleChange} required />
               </div>
             </div>
             <div className="form-group row">
               <label className="col-sm-3 col-form-label">Nơi sinh</label>
               <div className="col-sm-9">
-                <select className="form-control" name="nhtBrithPlace" value={this.state.nhtBrithPlace} onChange={this.handleChange}>
+                <select className="form-control" name="nhtBirthPlace" value={this.state.nhtBirthPlace} onChange={this.handleChange}>
                   <option value="HN">Hà Nội</option>
                   <option value="TpHCM">TP. Hồ Chí Minh</option>
                   <option value="ĐN">Đà Nẵng</option>
@@ -87,10 +106,10 @@ export default class NhtForm extends Component {
             <div className="form-group row">
               <label className="col-sm-3 col-form-label">Địa chỉ</label>
               <div className="col-sm-9">
-                <textarea className="form-control" name="nhtAddress" value={this.state.nhtAddress} onChange={this.handleChange} />
+                <textarea className="form-control" name="nhtAddress" value={this.state.nhtAddress} onChange={this.handleChange} required />
               </div>
             </div>
-            <button type="submit" className="btn btn-primary me-2">Lưu</button>
+            <button type="submit" className="btn btn-primary me-2">{this.props.isAddingNew ? "Thêm" : "Lưu"}</button>
           </form>
         </div>
       </div>

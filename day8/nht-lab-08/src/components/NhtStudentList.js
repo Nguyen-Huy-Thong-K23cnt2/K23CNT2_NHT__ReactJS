@@ -2,45 +2,34 @@ import React, { Component } from 'react';
 import NhtStudent from './NhtStudent';
 
 export default class NhtStudentList extends Component {
- 
-    render() {
-        let { renderNhtStudents, onNhtHandleView, onNhtHandleEdit, onNhtHandleDelete } = this.props;
-        console.log("List:", renderNhtStudents);
+  render() {
+    let { renderNhtStudents, onNhtHandleView, onNhtHandleEdit, onNhtHandleDelete } = this.props;
 
-        let nhtElementStudent = renderNhtStudents.map((nhtItem, index) => {
-            return (
-                <NhtStudent 
-                    key={index} 
-                    renderNhtStudent={nhtItem} 
-                    onNhtHandleView={onNhtHandleView} 
-                    onNhtHandleEdit={onNhtHandleEdit} 
-                    onNhtHandleDelete={onNhtHandleDelete} 
-                    nhtIndex={index + 1} 
-                />
-            );
-        });
-
-        return (
-            <div className="card-body">
-                <h3 className="card-title">Danh sách sinh viên</h3>
-                <div className="table-responsive pt-3">
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Mã sinh viên</th>
-                                <th>Tên sinh viên</th>
-                                <th>Tuổi</th>
-                                <th>Giới tính</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {nhtElementStudent}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        );
-    }
+    return (
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Mã SV</th>
+            <th>Họ tên</th>
+            <th>Tuổi</th>
+            <th>Giới tính</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {renderNhtStudents.map((student, index) => (
+            <NhtStudent 
+              key={student.nhtID} 
+              nhtIndex={index + 1} 
+              renderNhtStudent={student} 
+              onNhtHandleView={onNhtHandleView} 
+              onNhtHandleEdit={onNhtHandleEdit}
+              onNhtHandleDelete={onNhtHandleDelete}
+            />
+          ))}
+        </tbody>
+      </table>
+    );
+  }
 }

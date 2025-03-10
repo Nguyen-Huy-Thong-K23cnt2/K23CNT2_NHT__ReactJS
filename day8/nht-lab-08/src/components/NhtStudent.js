@@ -1,56 +1,22 @@
 import React, { Component } from 'react';
 
 export default class NhtStudent extends Component {
+  render() {
+    let { renderNhtStudent, nhtIndex, onNhtHandleView, onNhtHandleEdit, onNhtHandleDelete } = this.props;
 
-    // Hàm xử lý khi bấm "Xem"
-    nhtHandleView = () => {
-        this.props.onNhtHandleView(this.props.renderNhtStudent);
-    }
-
-    // Hàm xử lý khi bấm "Sửa"
-    nhtHandleEdit = () => {
-        this.props.onNhtHandleEdit(this.props.renderNhtStudent);
-    }
-
-    // Hàm xử lý khi bấm "Xóa"
-    nhtHandleDelete = () => {
-        this.props.onNhtHandleDelete(this.props.renderNhtStudent.nhtID);
-    }
-
-    render() {
-        let { renderNhtStudent, nhtIndex } = this.props;
-        console.log("Student:", renderNhtStudent);
-
-        return (
-            <tr>
-                <td>{nhtIndex}</td>
-                <td>{renderNhtStudent.nhtID}</td>
-                <td>{renderNhtStudent.nhtStudentName}</td>
-                <td>{renderNhtStudent.nhtAge}</td>
-                <td>{renderNhtStudent.nhtGender}</td>
-                <td>
-                    <div className="template-demo">
-                        <button
-                            type="button"
-                            className="btn btn-danger btn-icon-text"
-                            onClick={this.nhtHandleView}>
-                            Xem
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-warning btn-icon-text"
-                            onClick={this.nhtHandleEdit}>
-                            Sửa
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-success btn-icon-text"
-                            onClick={this.nhtHandleDelete}>
-                            Xóa
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        );
-    }
+    return (
+      <tr>
+        <td>{nhtIndex}</td>
+        <td>{renderNhtStudent.nhtID}</td>
+        <td>{renderNhtStudent.nhtStudentName}</td>
+        <td>{renderNhtStudent.nhtAge}</td>
+        <td>{renderNhtStudent.nhtGender}</td>
+        <td>
+          <button className="btn btn-info btn-sm me-2" onClick={() => onNhtHandleView(renderNhtStudent)}>Xem</button>
+          <button className="btn btn-warning btn-sm me-2" onClick={() => onNhtHandleEdit(renderNhtStudent)}>Sửa</button>
+          <button className="btn btn-danger btn-sm" onClick={() => onNhtHandleDelete(renderNhtStudent.nhtID)}>Xóa</button>
+        </td>
+      </tr>
+    );
+  }
 }

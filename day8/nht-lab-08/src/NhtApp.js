@@ -2,47 +2,97 @@ import React, { Component } from 'react';
 import NhtControl from './components/NhtControl';
 import NhtStudentList from './components/NhtStudentList';
 import NhtForm from './components/NhtForm';
+import NhtStudentDetail from './components/NhtStudentDetail'; 
 
 class NhtApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       nhtStudents: [ 
-        { nhtID: "SV001", nhtStudentName: "Nguyễn Huy Thông", nhtAge: 19, nhtGender: "Nam", nhtBirthday: "04/09/2005", nhtBrithPlace: "QN", nhtAddress: "Yên Xá" },
-        { nhtID: "SV002", nhtStudentName: "Nguyễn Quốc Duy", nhtAge: 19, nhtGender: "Nam", nhtBirthday: "04/09/2005", nhtBrithPlace: "HN", nhtAddress: "Hai Bà Trưng" },
-        { nhtID: "SV003", nhtStudentName: "Nguyễn Hữu Chung", nhtAge: 19, nhtGender: "Nam", nhtBirthday: "04/09/2005", nhtBrithPlace: "HD", nhtAddress: "Hải Dương" },
-        { nhtID: "SV004", nhtStudentName: "Nguyễn Duy Khánh", nhtAge: 20, nhtGender: "Nam", nhtBirthday: "13/01/2005", nhtBrithPlace: "HD", nhtAddress: "Yên Xá" }
+        { nhtID: "SV001", nhtStudentName: "Nguyễn Huy Thông", nhtAge: 19, nhtGender: "Nam", nhtBirthday: "04/09/2005", nhtBirthPlace: "QN", nhtAddress: "Yên Xá" },
+        { nhtID: "SV002", nhtStudentName: "Nguyễn Quốc Duy", nhtAge: 19, nhtGender: "Nam", nhtBirthday: "04/09/2005", nhtBirthPlace: "HN", nhtAddress: "Hai Bà Trưng" },
+        { nhtID: "SV003", nhtStudentName: "Nguyễn Hữu Chung", nhtAge: 19, nhtGender: "Nam", nhtBirthday: "04/09/2005", nhtBirthPlace: "HD", nhtAddress: "Hải Dương" },
+        { nhtID: "SV004", nhtStudentName: "Nguyễn Duy Khánh", nhtAge: 20, nhtGender: "Nam", nhtBirthday: "13/01/2005", nhtBirthPlace: "HD", nhtAddress: "Yên Xá" }
       ],
-      selectedStudent: null
+      filteredStudents: [],
+      selectedStudent: null,
+      showDetail: false, 
+      isAddingNew: false,
+      searchKeyword: ''
     };
   }
 
-  // Xử lý khi bấm "Xem"
-  onNhtHandleView = (nhtStudent) => {
-    this.setState({ selectedStudent: nhtStudent });
+  componentDidMount() {
+    this.setState({ filteredStudents: this.state.nhtStudents });
+  }
+
+  // 🔎 Xử lý tìm kiếm sinh viên theo tên
+  onNhtHandleSearch = (keyword) => {
+    this.setState({ searchKeyword: keyword }, this.filterStudents);
   };
 
-  // Xử lý khi bấm "Sửa"
-  onNhtHandleEdit = (nhtStudent) => {
-    this.setState({ selectedStudent: nhtStudent });
-  };
-
-  // Xử lý khi bấm "Xóa"
-  onNhtHandleDelete = (studentID) => {
-    let filteredStudents = this.state.nhtStudents.filter(student => student.nhtID !== studentID);
-    this.setState({ nhtStudents: filteredStudents });
-  };
-
-  // ✅ Xử lý khi bấm "Lưu" sau khi chỉnh sửa
-  onNhtHandleUpdate = (updatedStudent) => {
-    let updatedStudents = this.state.nhtStudents.map(student => 
-      student.nhtID === updatedStudent.nhtID ? updatedStudent : student
+  // Hàm lọc danh sách sinh viên dựa vào từ khóa tìm kiếm
+  filterStudents = () => {
+    const { nhtStudents, searchKeyword } = this.state;
+    const filtered = nhtStudents.filter(student =>
+      student.nhtStudentName.toLowerCase().includes(searchKeyword.toLowerCase())
     );
+    this.setState({ filteredStudents: filtered });
+  };
 
-    this.setState({ 
-      nhtStudents: updatedStudents,
-      selectedStudent: null // Reset form sau khi cập nhật
+  // 🔎 Xử lý khi bấm "Xem"
+  onNhtHandleView = (nhtStudent) => {
+    this.setState({
+      selectedStudent: nhtStudent,
+      showDetail: true,
+      isAddingNew: false
     });
+  };
+
+  // ❌ Xử lý khi bấm "Đóng"
+  onNhtHandleCloseDetail = () => {
+    this.setState({ showDetail: false });
+  };
+
+  // ✏️ Xử lý khi bấm "Sửa"
+  onNhtHandleEdit = (nhtStudent) => {
+    this.setState({ selectedStudent: nhtStudent, showDetail: false, isAddingNew: false });
+  };
+
+  // 🗑 Xử lý khi bấm "Xóa"
+  onNhtHandleDelete = (studentID) => {
+    this.setState(prevState => {
+      const updatedStudents = prevState.nhtStudents.filter(student => student.nhtID !== studentID);
+      return { nhtStudents: updatedStudents, showDetail: false };
+    }, this.filterStudents);
+  };
+
+  // ✅ Cập nhật sinh viên sau khi chỉnh sửa
+  onNhtHandleUpdate = (updatedStudent) => {
+    this.setState(prevState => {
+      const updatedStudents = prevState.nhtStudents.map(student => 
+        student.nhtID === updatedStudent.nhtID ? updatedStudent : student
+      );
+      return { nhtStudents: updatedStudents, selectedStudent: null, isAddingNew: false };
+    }, this.filterStudents);
+  };
+
+  // 🆕 Xử lý khi bấm "Thêm mới"
+  onNhtHandleAddNew = () => {
+    this.setState({
+      selectedStudent: null,
+      showDetail: false,
+      isAddingNew: true
+    });
+  };
+
+  // 🆕 Xử lý khi lưu sinh viên mới
+  onNhtHandleSaveNew = (newStudent) => {
+    this.setState(prevState => ({
+      nhtStudents: [...prevState.nhtStudents, newStudent],
+      selectedStudent: null,
+      isAddingNew: false
+    }), this.filterStudents);
   };
 
   render() {
@@ -53,21 +103,33 @@ class NhtApp extends Component {
           <div className="row">
             <div className="col-lg-7 grid-margin stretch-card">
               <div className="card">
-                <NhtControl />
+                <NhtControl 
+                  onNhtHandleAddNew={this.onNhtHandleAddNew} 
+                  onNhtHandleSearch={this.onNhtHandleSearch} 
+                />
                 <NhtStudentList
-                  renderNhtStudents={this.state.nhtStudents}
-                  onNhtHandleView={this.onNhtHandleView}
+                  renderNhtStudents={this.state.filteredStudents} 
+                  onNhtHandleView={this.onNhtHandleView} 
                   onNhtHandleEdit={this.onNhtHandleEdit}
                   onNhtHandleDelete={this.onNhtHandleDelete}
                 />
               </div>
             </div>
+
             <div className="col-5 grid-margin">
-              {/* 🔥 Truyền `onNhtHandleUpdate` vào `NhtForm` */}
-              <NhtForm 
-                renderNhtStudent={this.state.selectedStudent} 
-                onNhtHandleUpdate={this.onNhtHandleUpdate} 
-              />
+              {this.state.showDetail ? (
+                <NhtStudentDetail 
+                  student={this.state.selectedStudent} 
+                  onClose={this.onNhtHandleCloseDetail} 
+                />
+              ) : (
+                <NhtForm 
+                  renderNhtStudent={this.state.selectedStudent} 
+                  onNhtHandleUpdate={this.onNhtHandleUpdate} 
+                  onNhtHandleSaveNew={this.onNhtHandleSaveNew} 
+                  isAddingNew={this.state.isAddingNew} 
+                />
+              )}
             </div>
           </div>
         </section>
