@@ -4,12 +4,16 @@ const NhtThemeContext = createContext();
 
 export function NhtThemeProvider({ children }) {
     const [theme, setTheme] = useState(() => {
-        return localStorage.getItem("theme") || "light"; // Lưu trạng thái theme vào localStorage
+        return localStorage.getItem("theme") || "light"; // Lấy theme từ localStorage hoặc mặc định là "light"
     });
 
     useEffect(() => {
-        document.body.className = theme; // Thêm class vào <body> để thay đổi theme
-        localStorage.setItem("theme", theme); // Lưu theme vào localStorage để giữ lại sau khi tải lại trang
+        // Xóa class cũ trước khi thêm class mới để tránh bị chồng chéo
+        document.body.classList.remove("light", "dark");
+        document.body.classList.add(theme);
+
+        // Lưu theme vào localStorage
+        localStorage.setItem("theme", theme);
     }, [theme]);
 
     const toggleTheme = () => {
@@ -24,5 +28,9 @@ export function NhtThemeProvider({ children }) {
 }
 
 export function useNhtTheme() {
-    return useContext(NhtThemeContext);
+    const context = useContext(NhtThemeContext);
+    if (!context) {
+        throw new Error("useNhtTheme phải được sử dụng bên trong <NhtThemeProvider>");
+    }
+    return context;
 }
