@@ -1,17 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import NhtApp from "./NhtApp";
+import reportWebVitals from "./reportWebVitals";
+import { NhtThemeProvider } from "./context/NhtThemeContext"; // Import đúng
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// Kiểm tra phần tử có tồn tại không trước khi render
+const rootElement = document.getElementById("nhtRoot");
+if (rootElement) {
+  const nhtRoot = ReactDOM.createRoot(rootElement);
+  nhtRoot.render(
+    <React.StrictMode>
+      <NhtThemeProvider>
+        <NhtApp />
+      </NhtThemeProvider>
+    </React.StrictMode>
+  );
+} else {
+  console.error("Không tìm thấy phần tử có ID 'nhtRoot'. Kiểm tra lại index.html!");
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// Bật đo lường hiệu suất nếu cần
+reportWebVitals(console.log);
