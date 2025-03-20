@@ -1,0 +1,21 @@
+{
+    "users":[
+        {
+            "fullName":"Nguyễn Huy Thông",
+            "age":19,
+            "class":"K23CNT2"
+        },
+        {
+            "fullName":"Nguyễn Duy Khánh",
+             "age":19,
+            "class":"K23CNT2"
+        }
+    ],
+    "student":[
+        {
+            "studentid":"SV001",
+            "studentName":"Nguyễn Duy Hưng"
+
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "nht-lap-13-localapi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "json-server --watch dbs.json --port 3001 "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
